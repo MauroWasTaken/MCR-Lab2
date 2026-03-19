@@ -1,0 +1,45 @@
+@startuml
+interface Subject{
++ attach (o : View) : void
++ detach (o : View) : void
++ notify() : void
+}
+class Chrono extends Subject{
+- id : int
+- enabled : boolean
+- {static} counter : int
+- elapsedTime : long
+- tick() : void
++ start() : void
++ stop() : void
++ toggle() : void
++ reset() : void
++ getElapsedTime():double
+}
+interface View {
+- toggle() : void
++ update() : void
++ draw(): void
+}
+class Roman extends View{
+}
+class Arab extends View{
+}
+class Digital extends View{
+}
+class Clock {
+- image :Image
+- Clock(imagePath:String)
++ draw(time : long):void
+}
+class ClockFactory {
++ getClock(imagePath:String)
+}
+
+Roman"*" -- "1"Clock
+Arab"*" -- "1"Clock
+ClockFactory -- Clock
+ClockFactory -right- Roman
+ClockFactory -right- Arab
+
+@enduml
