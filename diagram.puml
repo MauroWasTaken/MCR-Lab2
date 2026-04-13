@@ -17,9 +17,8 @@ class Chrono extends Subject{
 + getElapsedTime():double
 }
 interface View {
-- toggle() : void
++ toggle() : void
 + update() : void
-+ draw(): void
 }
 class Roman extends View{
 }
