@@ -1,15 +1,20 @@
 package org.mcr.lab2.display.controlsview;
 
-import org.mcr.lab2.display.DefaultAbstractWindow;
+import org.mcr.lab2.chrono.ChronoSubject;
+import org.mcr.lab2.display.clocks.Arab;
+import org.mcr.lab2.display.clocks.Digital;
 import org.mcr.lab2.display.clocks.Roman;
+import org.mcr.lab2.display.clocks.View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ControlsView extends JFrame {
     private final int nbChronos;
 
-    //private final Chrono[] chronos;
+    private final ChronoSubject[] chronos;
 
     private final JButton[] startButtons;
     private final JButton[] stopButtons;
@@ -30,7 +35,7 @@ public class ControlsView extends JFrame {
 
         this.nbChronos = nbChronos;
 
-        //chronos = new Chrono[nbChronos];
+        chronos = new ChronoSubject[nbChronos];
         startButtons = new JButton[nbChronos];
         stopButtons = new JButton[nbChronos];
         resetButtons = new JButton[nbChronos];
@@ -46,7 +51,7 @@ public class ControlsView extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         for (int row = 0; row < nbChronos; row++) {
-            //chronos[row] = new Chrono(row + 1); //sending row so i can use it on the labels
+            chronos[row] = new ChronoSubject(row + 1); //sending row so i can use it on the labels
             startButtons[row] = new JButton("Démarrer");
             stopButtons[row] = new JButton("Arrêter");
             resetButtons[row] = new JButton("Réinitialiser");
@@ -55,31 +60,59 @@ public class ControlsView extends JFrame {
             digitalButtons[row] = new JButton("Numérique");
 
             // add listeners
+            int finalRow = row;
             startButtons[row].addActionListener(e -> {
-                //chronos[row].start();
+                chronos[finalRow].start();
             });
             stopButtons[row].addActionListener(e -> {
-                //chronos[row].stop();
+                chronos[finalRow].stop();
             });
             resetButtons[row].addActionListener(e -> {
-                //chronos[row].reset();
+                chronos[finalRow].reset();
             });
             romanButtons[row].addActionListener(e -> {
                 JFrame frame = new JFrame("");
-                //frame.add(new Roman(chronos[row]));
                 frame.setSize(200, 200);
+                final JPanel roman = new Roman(chronos[finalRow]);
+                frame.setContentPane(roman);
+
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        super.windowClosing(e);
+                        chronos[finalRow].detach((View) roman);
+                    }
+                });
                 frame.setVisible(true);
             });
             arabicButtons[row].addActionListener(e -> {
                 JFrame frame = new JFrame("");
-                //frame.add(new Arab(chronos[row]));
                 frame.setSize(200, 200);
+                final JPanel arab = new Arab(chronos[finalRow]);
+                frame.setContentPane(arab);
+
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        super.windowClosing(e);
+                        chronos[finalRow].detach((View) arab);
+                    }
+                });
                 frame.setVisible(true);
             });
             digitalButtons[row].addActionListener(e -> {
                 JFrame frame = new JFrame("");
-                //frame.add(new Digital(chronos[row]));
                 frame.setSize(200, 200);
+                final JPanel digital = new Digital(chronos[finalRow]);
+                frame.setContentPane(digital);
+
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        super.windowClosing(e);
+                        chronos[finalRow].detach((View) digital);
+                    }
+                });
                 frame.setVisible(true);
             });
             JButton[] rowButtons = {
@@ -119,7 +152,9 @@ public class ControlsView extends JFrame {
         gbc.gridx = 6;
         panel.add(allDigitalButton, gbc);
 
-        getContentPane().add(panel); //adds panel onto self (jframe)
-
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        add(panel, BorderLayout.CENTER);
+        pack();
     }
 }

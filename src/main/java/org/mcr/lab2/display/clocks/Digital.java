@@ -1,39 +1,37 @@
 package org.mcr.lab2.display.clocks;
 
+import org.mcr.lab2.chrono.ChronoSubject;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Digital extends JPanel implements View {
-    JPanel panel;
-    // Chrono chrono
-    Clock clock;
+    private final ChronoSubject chrono;
     private final JLabel label;
 
-    Digital(/*Chrono chrono,*/){
-        this.panel = panel;
-        //this.chrono = chrono;
-        //todo add this as listener for chrono
+    private final String TEMPLATE = "Chrono %d: %02dh %02dm %02ds";
 
-        label = new JLabel("", SwingConstants.CENTER);
-
-        setLayout(new BorderLayout());
-        add(label, BorderLayout.CENTER);
-    }
-
-    public void toggle() {
-        //chrono.toggle();
+    public Digital(ChronoSubject chrono) {
+        super(new GridBagLayout());
+        this.chrono = chrono;
+        this.chrono.attach(this);
+        label = new JLabel(TEMPLATE.formatted(chrono.getId(), 0, 0, 0), SwingConstants.CENTER);
+        add(label);
     }
 
     @Override
     public void update() {
-        // elapsedSeconds = chrono.getElapsedTime();
+        final long elapsedSeconds = chrono.getElapsedTime();
 
-        //long h = elapsedSeconds / 3600;
-        //long m = (elapsedSeconds % 3600) / 60;
-        //long s = elapsedSeconds % 60;
+        long h = elapsedSeconds / 3600;
+        long m = (elapsedSeconds % 3600) / 60;
+        long s = elapsedSeconds % 60;
 
-        //String time = String.format("%02dh %02dm %02ds", h, m, s);
+        String time = String.format(TEMPLATE, chrono.getId(), h, m, s);
 
-        //label.setText(time);
+        if (label != null) {
+            label.setText(time);
+            add(label);
+        }
     }
 }

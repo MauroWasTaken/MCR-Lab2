@@ -1,47 +1,45 @@
 package org.mcr.lab2.chrono;
 
-public class Chrono extends ChronoSubject {
-    private final int id;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+public class Chrono {
     private boolean enabled;
-    private int counter;
-    private long elapsedTime;
+    private Instant start;
+    private long restartOffset;
 
-    // TODO: add Timer (enonce says util.Timer, but Swing.Timer has pause/restart methods...)
-    // TODO: link timer with elapsedTime. Or replace elapsedTime altogether.
-    // TODO: or perhaps, have a timer that calls tick() every second.
-
-    public Chrono(int id) {
-        this.id = id;
+    public Chrono() {
         this.enabled = false;
-        this.counter = 0;
-        this.elapsedTime = 0;
-    }
-
-    private void tick() {
-        this.elapsedTime += 1;
+        this.restartOffset = 0;
     }
 
     public void start() {
         this.enabled = true;
-        notifyView();
+        this.start = Instant.now();
     }
 
     public void stop() {
         this.enabled = false;
-        notifyView();
+        this.restartOffset = this.start.until(Instant.now(), ChronoUnit.SECONDS) + restartOffset;
     }
 
     public void toggle() {
         this.enabled = !this.enabled;
-        notifyView();
     }
 
     public void reset() {
-        this.elapsedTime = 0;
-        notifyView();
+        this.start = Instant.now();
+        this.restartOffset = 0;
     }
 
     public long getElapsedTime() {
-        return this.elapsedTime;
+        if (this.start == null) {
+            return 0;
+        }
+        return restartOffset + this.start.until(Instant.now(), ChronoUnit.SECONDS);
+    }
+
+    public boolean isEnabled() {
+        return this.enabled;
     }
 }

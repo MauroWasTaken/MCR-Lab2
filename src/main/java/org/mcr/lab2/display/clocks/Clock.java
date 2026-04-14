@@ -12,7 +12,7 @@ public class Clock {
 
     Clock(String imagePath){
         if (!imagePath.isBlank()) {
-            try { image = ImageIO.read(new File(imagePath)); }
+            try { image = ImageIO.read(new File("src/main/resources/clockfaces/%s".formatted(imagePath)).getAbsoluteFile()); }
             catch (Exception e) { System.err.println("Could not load image: " + imagePath); }
         }
     }
