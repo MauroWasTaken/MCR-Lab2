@@ -72,9 +72,10 @@ public class ControlsView extends JFrame {
             });
             romanButtons[row].addActionListener(e -> {
                 JFrame frame = new JFrame("");
-                frame.setSize(200, 200);
+                frame.setSize(200, 235);
                 final JPanel roman = new Roman(chronos[finalRow]);
                 frame.setContentPane(roman);
+                frame.setResizable(false);
 
                 frame.addWindowListener(new WindowAdapter() {
                     @Override
@@ -87,9 +88,10 @@ public class ControlsView extends JFrame {
             });
             arabicButtons[row].addActionListener(e -> {
                 JFrame frame = new JFrame("");
-                frame.setSize(200, 200);
+                frame.setSize(200, 235);
                 final JPanel arab = new Arab(chronos[finalRow]);
                 frame.setContentPane(arab);
+                frame.setResizable(false);
 
                 frame.addWindowListener(new WindowAdapter() {
                     @Override
@@ -102,9 +104,10 @@ public class ControlsView extends JFrame {
             });
             digitalButtons[row].addActionListener(e -> {
                 JFrame frame = new JFrame("");
-                frame.setSize(200, 200);
+                frame.setSize(200, 235);
                 final JPanel digital = new Digital(chronos[finalRow]);
                 frame.setContentPane(digital);
+                frame.setResizable(false);
 
                 frame.addWindowListener(new WindowAdapter() {
                     @Override
