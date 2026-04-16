@@ -9,7 +9,7 @@ public class Digital extends JPanel implements View {
     private final ChronoSubject chrono;
     private final JLabel label;
 
-    private final String TEMPLATE = "Chrono %d: %02dh %02dm %02ds";
+    private final String TEMPLATE = "Chrono #%d: %02dh %02dm %02ds";
 
     public Digital(ChronoSubject chrono) {
         super(new GridBagLayout());
