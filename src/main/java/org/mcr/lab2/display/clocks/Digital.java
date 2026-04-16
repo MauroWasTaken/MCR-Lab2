@@ -2,8 +2,11 @@ package org.mcr.lab2.display.clocks;
 
 import org.mcr.lab2.chrono.ChronoSubject;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.GridBagLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class Digital extends JPanel implements View {
     private final ChronoSubject chrono;

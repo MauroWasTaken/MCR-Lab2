@@ -4,9 +4,13 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 public class Chrono {
+    // Class that performs the actual time measurement
+
     private boolean enabled;
+    // Point-in-time based time measurement, resilient to DST changes
     private Instant start;
-    private long restartOffset;
+    // When pausing/resuming, keeps track of the elapsed time until stopping
+    private long restartOffset; // seconds
 
     public Chrono() {
         this.enabled = false;
@@ -19,14 +23,13 @@ public class Chrono {
     }
 
     public void stop() {
-        this.enabled = false;
-        if (this.start != null) {
-            this.restartOffset = this.start.until(Instant.now(), ChronoUnit.SECONDS) + restartOffset;
+        if (this.enabled) {
+            this.enabled = false;
+            if (this.start != null) {
+                // Save elapsed time in seconds
+                this.restartOffset = this.start.until(Instant.now(), ChronoUnit.SECONDS) + restartOffset;
+            }
         }
-    }
-
-    public void toggle() {
-        this.enabled = !this.enabled;
     }
 
     public void reset() {
@@ -38,6 +41,7 @@ public class Chrono {
         if (this.start == null) {
             return 0;
         }
+        // Return total time, including potential offset if any pause has been requested until now
         return restartOffset + this.start.until(Instant.now(), ChronoUnit.SECONDS);
     }
 

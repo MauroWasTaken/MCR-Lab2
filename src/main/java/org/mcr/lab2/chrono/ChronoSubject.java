@@ -8,6 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ChronoSubject implements IChronoSubject {
+    // Class that handles a chrono object
+
     private final List<View> observingViews;
     private final int id;
 
@@ -48,7 +50,9 @@ public class ChronoSubject implements IChronoSubject {
     }
 
     public void start() {
+        // Start the chrono object
         this.chrono.start();
+        // Pool at fixed rate (1 second by default) the chronometer's value
         this.timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -65,10 +69,11 @@ public class ChronoSubject implements IChronoSubject {
 
     public void reset() {
         this.chrono.reset();
-        notifyViews();
+        this.poolChrono();
     }
 
     private void poolChrono() {
+        // Pool the chronometer's elapsed time and notify the views
         this.elapsedTime = chrono.getElapsedTime();
         notifyViews();
     }

@@ -1,10 +1,15 @@
 package org.mcr.lab2.display.clocks;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 public class Clock {
 
@@ -19,7 +24,7 @@ public class Clock {
 
     public void draw(JPanel panel, Graphics g, long elapsedSeconds,
                      Color hourColor, Color minuteColor, Color secondColor) {
-        // AI Disclamer: this function was given to us by claude, couldn't figure out how to make the hands of the clock
+        // AI Disclaimer: this function was given to us by claude, couldn't figure out how to make the hands of the clock
 
         int w = panel.getWidth(), h = panel.getHeight();
         int cx = w / 2, cy = h / 2;
@@ -54,7 +59,7 @@ public class Clock {
         drawHand(g, cx, cy, Math.toRadians(mins  *  6 - 90),  (int)(radius * 0.70), 3, minuteColor);
         drawHand(g, cx, cy, Math.toRadians(secs  *  6 - 90),  (int)(radius * 0.80), 2, secondColor);
 
-        // Centre dot
+        // Center dot
         g.setColor(Color.DARK_GRAY);
         g.fillOval(cx - 5, cy - 5, 10, 10);
     }
