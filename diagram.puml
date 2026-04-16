@@ -1,28 +1,31 @@
 @startuml
-interface Subject{
+interface IChronoSubject{
 + attach (o : View) : void
 + detach (o : View) : void
-+ notify() : void
++ notifyViews() : void
 }
-class Chrono extends Subject{
+class ChronoSubject extends IChronoSubject{
 - id : int
-- enabled : boolean
-- {static} counter : int
+- chrono: Chrono
+- timer: Timer
 - elapsedTime : long
-- tick() : void
-+ start() : void
-+ stop() : void
-+ toggle() : void
-+ reset() : void
-+ getElapsedTime():double
+- observingViews: List<View>
++ ChronoSubject(chrono:Chrono)
++ getElapsedTime():long
++ getId():int
++ start():void
++ stop():void
++ reset():void
+- poolChrono():void
 }
 interface View {
-+ toggle() : void
 + update() : void
 }
 class Roman extends View{
+-{static}IMAGE_PATH:String
 }
 class Arab extends View{
+-{static} IMAGE_PATH:String
 }
 class Digital extends View{
 }
@@ -32,11 +35,38 @@ class Clock {
 + draw(time : long):void
 }
 class ClockFactory {
-+ getClock(imagePath:String)
++ createClock(imagePath:String)
+}
+class Chrono {
+- enabled:boolean
+- start:Instant
+- restartOffset:long
++ Chrono()
++ start():void
++ stop():void
++ reset():void
++ getElapsedTime():long
++ isEnabled():boolean
+}
+class ControlsView {
+- nbChronos:int
+- chronos:ChronoSubject[]
++ ControlsView(nbChronos:int)
+- updateLayout(frame:JFrame,panel:JPanel,count:int):void
+- createRomanClockView(row:int):void
+- createArabClockView(row:int):void
+- createDigitalClockView(row:int):void
+- setCommonSingularClockViewAttributes(frame:JFrame,panel:JPanel,row:int):void
+- setCommonMultipleClockViewsAttributes(frame:JFrame,panel:JPanel,subjectViewMap:Map<ChronoSubject,View>):void
 }
 
 Roman"*" -- "1"Clock
+Roman"*" -- "1"ChronoSubject
 Arab"*" -- "1"Clock
+Arab"*" -- "1"ChronoSubject
+Digital"*" -- "1"ChronoSubject
+ChronoSubject"1" -- "1"Chrono
+ControlsView"1" -- "1-9"ChronoSubject
 ClockFactory -- Clock
 ClockFactory -right- Roman
 ClockFactory -right- Arab
