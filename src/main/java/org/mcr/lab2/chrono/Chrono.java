@@ -20,7 +20,9 @@ public class Chrono {
 
     public void stop() {
         this.enabled = false;
-        this.restartOffset = this.start.until(Instant.now(), ChronoUnit.SECONDS) + restartOffset;
+        if (this.start != null) {
+            this.restartOffset = this.start.until(Instant.now(), ChronoUnit.SECONDS) + restartOffset;
+        }
     }
 
     public void toggle() {

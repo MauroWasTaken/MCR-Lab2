@@ -8,8 +8,13 @@ import org.mcr.lab2.display.clocks.View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ControlsView extends JFrame {
     private final int nbChronos;
@@ -155,9 +160,130 @@ public class ControlsView extends JFrame {
         gbc.gridx = 6;
         panel.add(allDigitalButton, gbc);
 
+        allRomanButton.addActionListener(e -> {
+            JFrame frame = new JFrame("");
+            frame.setSize(200*nbChronos, 235);
+            JPanel clocksPanel = new JPanel();
+            java.util.Map<ChronoSubject, View> views = new HashMap<>();
+            for (ChronoSubject chrono : chronos) {
+                final JPanel roman = new Roman(chrono);
+                views.put(chrono, (View) roman);
+                clocksPanel.add(roman);
+            }
+
+            frame.setContentPane(clocksPanel);
+
+            frame.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    updateLayout(frame, clocksPanel, nbChronos);
+                }
+            });
+
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    super.windowClosing(e);
+                    for (Map.Entry<ChronoSubject, View> entries : views.entrySet()) {
+                        entries.getKey().detach(entries.getValue());
+                    }
+                }
+            });
+            frame.setVisible(true);
+
+        });
+
+        allArabicButton.addActionListener(e -> {
+            JFrame frame = new JFrame("");
+            frame.setSize(200*nbChronos, 235);
+            JPanel clocksPanel = new JPanel();
+            java.util.Map<ChronoSubject, View> views = new HashMap<>();
+            for (ChronoSubject chrono : chronos) {
+                final JPanel arab = new Arab(chrono);
+                views.put(chrono, (View) arab);
+                clocksPanel.add(arab);
+            }
+
+            frame.setContentPane(clocksPanel);
+
+            frame.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    updateLayout(frame, clocksPanel, nbChronos);
+                }
+            });
+
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    super.windowClosing(e);
+                    for (Map.Entry<ChronoSubject, View> entries : views.entrySet()) {
+                        entries.getKey().detach(entries.getValue());
+                    }
+                }
+            });
+            frame.setVisible(true);
+
+        });
+
+        allDigitalButton.addActionListener(e -> {
+            JFrame frame = new JFrame("");
+            frame.setSize(200*nbChronos, 235);
+            JPanel clocksPanel = new JPanel();
+            java.util.Map<ChronoSubject, View> views = new HashMap<>();
+            for (ChronoSubject chrono : chronos) {
+                final JPanel digital = new Digital(chrono);
+                views.put(chrono, (View) digital);
+                clocksPanel.add(digital);
+            }
+
+            frame.setContentPane(clocksPanel);
+
+            frame.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    updateLayout(frame, clocksPanel, nbChronos);
+                }
+            });
+
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    super.windowClosing(e);
+                    for (Map.Entry<ChronoSubject, View> entries : views.entrySet()) {
+                        entries.getKey().detach(entries.getValue());
+                    }
+                }
+            });
+            frame.setVisible(true);
+
+        });
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
         pack();
+    }
+
+    private void updateLayout(JFrame frame, JPanel panel, int count) {
+
+        int width = frame.getWidth();
+        int height = frame.getHeight();
+
+        // Decide columns based on aspect ratio
+        int cols;
+
+        if (width > height) {
+            cols = count; // horizontal
+        } else if (height > width) {
+            cols = 1; // vertical
+        } else {
+            cols = (int) Math.sqrt(count); // square-ish
+        }
+
+        int rows = (int) Math.ceil((double) count / cols);
+
+        panel.setLayout(new GridLayout(rows, cols));
+        panel.revalidate();
     }
 }

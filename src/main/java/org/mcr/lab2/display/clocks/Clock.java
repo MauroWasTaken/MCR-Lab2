@@ -26,7 +26,24 @@ public class Clock {
         int radius = (int)(Math.min(w, h) / 2.0 * 0.85);
 
         // Draw background image
-        if (image != null) g.drawImage(image, 0, 0, w, h, null);
+        if (image != null) {
+            int imageW = image.getWidth();
+            int imageH = image.getHeight();
+
+            double scale = Math.min(
+                    (double) w / imageW,
+                    (double) h / imageH
+            );
+
+            int newW = (int) (imageW * scale);
+            int newH = (int) (imageH * scale);
+
+            // Center the image
+            int x = (w - newW) / 2;
+            int y = (h - newH) / 2;
+
+            g.drawImage(image, x, y, newW, newH, null);
+        }
 
         // Compute angles (0° = 12 o'clock, clockwise)
         double secs = elapsedSeconds % 60;
