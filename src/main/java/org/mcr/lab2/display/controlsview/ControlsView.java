@@ -54,7 +54,7 @@ public class ControlsView extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         for (int row = 0; row < nbChronos; row++) {
-            chronos[row] = new ChronoSubject(row + 1); //sending row so i can use it on the labels
+            chronos[row] = new ChronoSubject(row + 1); //sending row so I can use it on the labels
             startButtons[row] = new JButton("Démarrer");
             stopButtons[row] = new JButton("Arrêter");
             resetButtons[row] = new JButton("Réinitialiser");

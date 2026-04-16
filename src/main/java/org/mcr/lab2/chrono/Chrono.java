@@ -18,8 +18,10 @@ public class Chrono {
     }
 
     public void start() {
-        this.enabled = true;
-        this.start = Instant.now();
+        if (!this.enabled) {
+            this.enabled = true;
+            this.start = Instant.now();
+        }
     }
 
     public void stop() {
